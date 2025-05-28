@@ -1,0 +1,790 @@
+# API Documentation
+
+## Admin Routes
+
+### GET /admin/users
+- **Description**: Get all users.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  [
+    {
+      "id": "user_id",
+      "email": "user@example.com",
+      "full_name": "John Doe",
+      "role": "USER"
+    }
+  ]
+  ```
+
+### POST /admin/users
+- **Description**: Create a new user.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123",
+    "fullName": "John Doe",
+    "role": "USER"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "user_id",
+    "email": "user@example.com",
+    "full_name": "John Doe",
+    "role": "USER"
+  }
+  ```
+
+### PUT /admin/users/:id
+- **Description**: Update a user.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "email": "user@example.com",
+    "fullName": "John Doe Updated",
+    "role": "ADMIN"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "user_id",
+    "email": "user@example.com",
+    "full_name": "John Doe Updated",
+    "role": "ADMIN"
+  }
+  ```
+
+### DELETE /admin/users/:id
+- **Description**: Delete a user.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  {
+    "message": "User deleted successfully"
+  }
+  ```
+
+### GET /admin/analytics
+- **Description**: Fetch analytics data for users, sessions, experts, and credits.
+- **Response**:
+  ```json
+  {
+    "users": {
+      "total": 100,
+      "regularUsers": 80,
+      "experts": 20,
+      "newUsers30d": 10
+    },
+    "sessions": {
+      "total": 200,
+      "completed": 150,
+      "last30Days": 50,
+      "averageDuration": 60,
+      "totalRevenue": 5000,
+      "revenue30d": 1000
+    },
+    "experts": {
+      "total": 20,
+      "consultants": 10,
+      "professionals": 10,
+      "onlineExperts": 5,
+      "averageRating": 4.5
+    },
+    "credits": {
+      "totalTransactions": 300,
+      "purchased": 10000,
+      "used": 8000,
+      "transactions30d": 50
+    },
+    "dailyStats": [
+      {
+        "date": "2023-10-01",
+        "sessions": 5,
+        "revenue": 500
+      }
+    ],
+    "topExperts": [
+      {
+        "id": "expert_id",
+        "name": "Expert Name",
+        "type": "CONSULTANT",
+        "specialty": "Therapist",
+        "rating": 4.8,
+        "sessions": 50,
+        "earnings": 2000
+      }
+    ],
+    "recentReviews": [
+      {
+        "id": "review_id",
+        "userName": "John Doe",
+        "expertName": "Expert Name",
+        "rating": 5,
+        "comment": "Great session!",
+        "createdAt": "2023-10-01"
+      }
+    ]
+  }
+  ```
+
+### GET /admin/experts
+- **Description**: Get all experts.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  [
+    {
+      "id": "expert_id",
+      "full_name": "Expert Name",
+      "specialty": "Therapist",
+      "rate": 50
+    }
+  ]
+  ```
+
+### POST /admin/experts
+- **Description**: Create a new expert.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "email": "expert@example.com",
+    "password": "password123",
+    "fullName": "Expert Name",
+    "type": "CONSULTANT",
+    "specialty": "Therapist",
+    "rate": 50,
+    "bio": "Expert bio",
+    "languages": ["English"],
+    "qualifications": ["PhD"],
+    "licenseNumber": "12345",
+    "experience": 10
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "expert_id",
+    "full_name": "Expert Name",
+    "specialty": "Therapist",
+    "rate": 50
+  }
+  ```
+
+### PUT /admin/experts/:id
+- **Description**: Update an expert.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "specialty": "Updated Specialty",
+    "rate": 60,
+    "bio": "Updated bio",
+    "languages": ["English", "Spanish"],
+    "qualifications": ["PhD", "MSc"],
+    "licenseNumber": "67890",
+    "experience": 12
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "expert_id",
+    "full_name": "Expert Name",
+    "specialty": "Updated Specialty",
+    "rate": 60
+  }
+  ```
+
+### DELETE /admin/experts/:id
+- **Description**: Delete an expert.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  {
+    "message": "Expert deleted successfully"
+  }
+  ```
+
+### GET /admin/withdrawals
+- **Description**: Get pending withdrawal requests.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  [
+    {
+      "id": "withdrawal_id",
+      "amount": 100,
+      "status": "PENDING",
+      "expert_id": "expert_id",
+      "created_at": "2023-10-01"
+    }
+  ]
+  ```
+
+### PUT /admin/withdrawals/:id
+- **Description**: Process a withdrawal request.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "status": "APPROVED"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "success": true
+  }
+  ```
+
+---
+
+## Auth Routes
+
+### POST /auth/request-otp
+- **Description**: Request an OTP for login.
+- **Request Body**:
+  ```json
+  {
+    "email": "user@example.com"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "message": "OTP sent successfully",
+    "email": "user@example.com"
+  }
+  ```
+
+### POST /auth/verify-otp
+- **Description**: Verify OTP and login.
+- **Request Body**:
+  ```json
+  {
+    "email": "user@example.com",
+    "otp": "123456"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "token": "jwt_token",
+    "user": {
+      "id": "user_id",
+      "email": "user@example.com",
+      "full_name": "John Doe",
+      "role": "USER"
+    }
+  }
+  ```
+
+---
+
+## Blogs Routes
+
+### GET /blogs
+- **Description**: Get all published blog posts with pagination.
+- **Query Parameters**:
+  - `page`: Page number (default: 1)
+  - `limit`: Number of posts per page (default: 10)
+- **Response**:
+  ```json
+  [
+    {
+      "id": "blog_id",
+      "title": "Blog Title",
+      "excerpt": "Blog excerpt",
+      "content": "Blog content",
+      "status": "PUBLISHED"
+    }
+  ]
+  ```
+
+### GET /blogs/featured
+- **Description**: Get featured blog posts.
+- **Query Parameters**:
+  - `limit`: Number of posts to fetch (default: 3)
+- **Response**:
+  ```json
+  [
+    {
+      "id": "blog_id",
+      "title": "Featured Blog Title",
+      "excerpt": "Featured blog excerpt",
+      "content": "Featured blog content"
+    }
+  ]
+  ```
+
+---
+
+## Experts Routes
+
+### GET /experts
+- **Description**: Get all experts.
+- **Response**:
+  ```json
+  [
+    {
+      "id": "expert_id",
+      "full_name": "Expert Name",
+      "specialty": "Therapist",
+      "rate": 50
+    }
+  ]
+  ```
+
+### GET /experts/profile
+- **Description**: Get the expert's profile.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  {
+    "id": "expert_id",
+    "full_name": "Expert Name",
+    "specialty": "Therapist",
+    "rate": 50
+  }
+  ```
+
+---
+
+## Sessions Routes
+
+### POST /sessions
+- **Description**: Create a scheduled session.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "expertId": "expert_id",
+    "startTime": "2023-10-01T10:00:00Z",
+    "duration": 60
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "session_id",
+    "status": "SCHEDULED"
+  }
+  ```
+
+### POST /sessions/chat
+- **Description**: Create a chat session.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "expertId": "expert_id"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "session_id",
+    "status": "WAITING",
+    "expertRate": 50,
+    "userCredits": 100
+  }
+  ```
+
+### POST /sessions/call
+- **Description**: Create a call session.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "expertId": "expert_id"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "sessionId": "session_id",
+    "expertRate": 50,
+    "userCredits": 100
+  }
+  ```
+
+### POST /sessions/:id/join
+- **Description**: Expert joins a session.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  {
+    "message": "Expert joined session",
+    "sessionId": "session_id",
+    "status": "ONGOING"
+  }
+  ```
+
+### PUT /sessions/:id/end
+- **Description**: End a session.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "endTime": "2023-10-01T11:00:00Z",
+    "duration": 60,
+    "creditsUsed": 50
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "session_id",
+    "status": "COMPLETED",
+    "remainingCredits": 50
+  }
+  ```
+
+### GET /sessions/user
+- **Description**: Get the user's sessions.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  [
+    {
+      "id": "session_id",
+      "status": "COMPLETED",
+      "expertId": "expert_id",
+      "startTime": "2023-10-01T10:00:00Z",
+      "duration": 60
+    }
+  ]
+  ```
+
+### GET /sessions/expert
+- **Description**: Get the expert's sessions.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  [
+    {
+      "id": "session_id",
+      "status": "COMPLETED",
+      "userId": "user_id",
+      "startTime": "2023-10-01T10:00:00Z",
+      "duration": 60
+    }
+  ]
+  ```
+
+### POST /sessions/:id/rate
+- **Description**: Submit a session rating.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "rating": 5,
+    "comment": "Great session!"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "review_id",
+    "rating": 5,
+    "comment": "Great session!"
+  }
+  ```
+
+---
+
+## Reviews Routes
+
+### POST /reviews
+- **Description**: Submit a review for a session.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "sessionId": "session_id",
+    "expertId": "expert_id",
+    "rating": 5,
+    "comment": "Great session!"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "review_id",
+    "sessionId": "session_id",
+    "expertId": "expert_id",
+    "rating": 5,
+    "comment": "Great session!"
+  }
+  ```
+
+---
+
+## Posts Routes
+
+### GET /posts
+- **Description**: Fetch all posts.
+- **Response**:
+  ```json
+  [
+    {
+      "id": "post_id",
+      "content": "Post content",
+      "tags": ["tag1", "tag2"]
+    }
+  ]
+  ```
+
+### POST /posts
+- **Description**: Create a new post.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "content": "Post content",
+    "tags": ["tag1", "tag2"]
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "id": "post_id",
+    "content": "Post content",
+    "tags": ["tag1", "tag2"]
+  }
+  ```
+
+---
+
+## Join Routes
+
+### POST /join
+- **Description**: Submit a join request for experts.
+- **Request Body**:
+  ```json
+  {
+    "fullName": "John Doe",
+    "email": "user@example.com",
+    "phone": "1234567890",
+    "type": "CONSULTANT",
+    "specialty": "Therapist",
+    "experience": "5 years",
+    "qualifications": "PhD",
+    "licenseNumber": "12345",
+    "languages": ["English"],
+    "bio": "Expert bio"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "success": true,
+    "message": "Join request submitted successfully"
+  }
+  ```
+
+---
+
+## Testimonials Routes
+
+### GET /testimonials
+- **Description**: Get all approved testimonials.
+- **Response**:
+  ```json
+  [
+    {
+      "id": "testimonial_id",
+      "name": "User Name",
+      "rating": 5,
+      "title": "Great Service",
+      "content": "Testimonial content"
+    }
+  ]
+  ```
+
+---
+
+## Notifications Operations
+
+### Create Notification
+- **Description**: Create a notification for a user.
+- **Parameters**:
+  - `userId`: ID of the user.
+  - `message`: Notification message.
+- **Response**:
+  ```json
+  {
+    "id": "notification_id",
+    "userId": "user_id",
+    "message": "Notification message"
+  }
+  ```
+
+---
+
+## Users Routes
+
+### GET /users/profile
+- **Description**: Get the user's profile.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  {
+    "id": "user_id",
+    "email": "user@example.com",
+    "full_name": "John Doe",
+    "credits": 100
+  }
+  ```
+
+### PUT /users/profile
+- **Description**: Update the user's profile.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "fullName": "John Doe Updated"
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "message": "Profile updated successfully"
+  }
+  ```
+
+### POST /users/create-order
+- **Description**: Create an order for purchasing credits.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "amount": 500,
+    "credits": 50
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "orderId": "order_id"
+  }
+  ```
+
+### POST /users/verify-payment
+- **Description**: Verify payment and add credits.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Request Body**:
+  ```json
+  {
+    "orderId": "order_id",
+    "paymentId": "payment_id",
+    "signature": "signature",
+    "credits": 50
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "success": true,
+    "credits": 150
+  }
+  ```
+
+### GET /users/credits
+- **Description**: Check the user's credits.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  {
+    "credits": 150,
+    "userId": "user_id"
+  }
+  ```
+
+### GET /users/credit-history
+- **Description**: Get the user's credit transaction history.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  [
+    {
+      "id": "transaction_id",
+      "credits": 50,
+      "type": "purchase",
+      "description": "Purchased 50 credits",
+      "date": "2023-10-01"
+    }
+  ]
+  ```
+
+### GET /users/notifications
+- **Description**: Get the user's notifications.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  [
+    {
+      "id": "notification_id",
+      "message": "You have received 50 credits",
+      "is_read": false,
+      "created_at": "2023-10-01"
+    }
+  ]
+  ```
+
+### PUT /users/notifications/:id/read
+- **Description**: Mark a notification as read.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  {
+    "success": true
+  }
+  ```
+
+### PUT /users/notifications/read-all
+- **Description**: Mark all notifications as read.
+- **Headers**:
+  - `Authorization`: Bearer token
+- **Response**:
+  ```json
+  {
+    "success": true
+  }
+  ```
